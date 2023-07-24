@@ -1,0 +1,12 @@
+{
+	"authors": [
+		"Knot126"
+	],
+	"copyright": "Copyright © 2023, Knot126",
+	"dependencies": {
+	},
+	"description": "game",
+	"license": "proprietary",
+	"name": "kyock",
+	"dflags": [ "-version=NO_OPENGL" ]
+}

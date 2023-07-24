@@ -5,7 +5,7 @@
  * useful and it makes a good starting task as it's not too complex.
  */
 
-enum LexerType {
+enum MTLexerType {
 	Unknown,
 	Symbol,
 	String,
@@ -59,35 +59,35 @@ enum LexerType {
 	AmpersandAmpersand,
 }
 
-enum LexerErrorType {
+enum MTLexerErrorType {
 	Unknown,
 	UnexpectedCharacter,
 	UnexpectedEndOfFile,
 }
 
-union LexerValue {
+union MTLexerValue {
 	long asInteger;
 	double asRational;
 	string asString;
 }
 
-struct LexerToken {
-	LexerType type;
-	LexerValue value;
+struct MTLexerToken {
+	MTLexerType type;
+	MTLexerValue value;
 	size_t location;
 }
 
-struct LexerError {
-	LexerErrorType type;
+struct MTLexerError {
+	MTLexerErrorType type;
 	string desc;
 }
 
-struct LexerResult {
-	LexerToken[] tokens;
-	LexerError[] errors;
+struct MTLexerResult {
+	MTLexerToken[] tokens;
+	MTLexerError[] errors;
 }
 
-LexerResult GenericLexerProcessString(string data) {
+MTLexerResult MTGenericLexerProcessString(string data) {
 	/*
 	 * Parse a generic string to a series of sensible tokens. This should be
 	 * fairly language independent.
@@ -95,5 +95,7 @@ LexerResult GenericLexerProcessString(string data) {
 	 * @param data The data to tokenise
 	 */
 	
+	MTLexerResult result;
 	
+	return result;
 }

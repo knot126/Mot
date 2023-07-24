@@ -1,0 +1,16 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/kyock
+kyock.so
+kyock.dylib
+kyock.dll
+kyock.a
+kyock.lib
+kyock-test-*
+*.exe
+*.pdb
+*.o
+*.obj
+*.lst

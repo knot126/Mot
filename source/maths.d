@@ -21,12 +21,7 @@
  * fuck you. Using external libraries is not learning how something works.
  */
 
-// I love (the idea of) templates but im not doing this
-struct Vector(Type, Length) {
-	Type[Length] data;
-}
-
-struct MtVector2 {
+struct MTVector2 {
 	float x, y;
 	
 	this(float x, float y) {
@@ -34,24 +29,24 @@ struct MtVector2 {
 		this.y = y;
 	}
 	
-	MtVector2 opBinary(string s : "+")(MtVector2 other) {
-		return MtVector2(this.x + other.x, this.y + other.y);
+	MTVector2 opBinary(string s : "+")(MTVector2 other) {
+		return MTVector2(this.x + other.x, this.y + other.y);
 	}
 	
-	MtVector2 opBinary(string s : "-")(MtVector2 other) {
-		return MtVector2(this.x - other.x, this.y - other.y);
+	MTVector2 opBinary(string s : "-")(MTVector2 other) {
+		return MTVector2(this.x - other.x, this.y - other.y);
 	}
 	
-	MtVector2 opBinary(string s : "*")(float scalar) {
-		return MtVector2(scalar * this.x, scalar * this.y);
+	MTVector2 opBinary(string s : "*")(float scalar) {
+		return MTVector2(scalar * this.x, scalar * this.y);
 	}
 	
-	MtVector2 opBinaryRight(string s : "*")(float scalar) {
-		return MtVector2(scalar * this.x, scalar * this.y);
+	MTVector2 opBinaryRight(string s : "*")(float scalar) {
+		return MTVector2(scalar * this.x, scalar * this.y);
 	}
 }
 
-float dot(MtVector2 a, MtVector2 b) {
+float dot(MTVector2 a, MTVector2 b) {
 	/*
 	 * Take the dot product of two 2D vectors
 	 * 

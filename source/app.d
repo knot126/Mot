@@ -4,5 +4,5 @@ import maths;
 import log;
 
 void main() {
-	MtLog(MtLogLevel.Warning, "Test!");
+	MTLog(MTLogLevel.Warning, "Test!");
 }

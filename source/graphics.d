@@ -1,4 +1,4 @@
 
-interface MTGraphicsInterface {
+struct MTWindow {
 	
 }

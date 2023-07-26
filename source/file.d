@@ -16,36 +16,36 @@ struct MTFile {
 	File f;
 	
 	this(string path, MTFileMode mode) {
-		this.f = new File();
+		this.f = File();
 		this.f.open(path, gFileModes[mode]);
 	}
 	
 	byte readByte() {
-		auto data = this.f.rawRead(byte[1]);
+		auto data = this.f.rawRead(new byte[1]);
 		return data[0];
 	}
 	
 	int readInt() {
-		auto data = this.f.rawRead(int[1]);
+		auto data = this.f.rawRead(new int[1]);
 		return data[0];
 	}
 	
 	uint readUInt() {
-		auto data = this.f.rawRead(uint[1]);
+		auto data = this.f.rawRead(new uint[1]);
 		return data[0];
 	}
 	
 	long readLong() {
-		auto data = this.f.rawRead(long[1]);
+		auto data = this.f.rawRead(new long[1]);
 		return data[0];
 	}
 	
 	ulong readULong() {
-		auto data = this.f.rawRead(ulong[1]);
+		auto data = this.f.rawRead(new ulong[1]);
 		return data[0];
 	}
 	
 	void seek(int mode, long offset) {
-		this.f.seek(offest, mode);
+		this.f.seek(offset, mode);
 	}
 }

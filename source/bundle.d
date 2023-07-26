@@ -1,4 +1,6 @@
+import std.stdio;
 import std.digest.sha;
+import error;
 import file;
 
 string gBundlePath = "./bundles/";
@@ -13,13 +15,13 @@ struct MTBundleIdentifier {
 
 struct MTBundleFile {
 	string name;
-	uint length;
+	uint size;
 	uint entry_start;
 	uint flags;
 	
-	this(string name, uint length, uint entry_start, uint flags) {
+	this(string name, uint size, uint entry_start, uint flags) {
 		this.name = name;
-		this.length = length;
+		this.size = size;
 		this.entry_start = entry_start;
 		this.flags = flags;
 	}
@@ -34,14 +36,14 @@ struct MTBundle {
 	}
 	
 	string getPath() {
-		return gBundlePath + this.identifier.toString() + ".bundle";
+		return gBundlePath ~ this.identifier.toString() ~ ".bundle";
 	}
 	
 	MTError loadInfo(string fromPath) {
 		MTFile file = MTFile(fromPath, MTFileMode.Read);
 		
 		// Read initial header
-		file.seek(SEEK_SET, -16);
+		file.seek(SEEK_END, -16);
 		
 		int count = file.readUInt();
 		int entry_start = file.readUInt();
@@ -51,6 +53,14 @@ struct MTBundle {
 		if (magic != 1802531412) {
 			return MTError.BadFormat;
 		}
+		
+		// Read extra info
+		file.seek(SEEK_SET, extra_start);
+		
+		// Read file entry data
+		file.seek(SEEK_SET, entry_start);
+		
+		return MTError.Success;
 	}
 	
 	

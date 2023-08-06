@@ -4,9 +4,13 @@
 	],
 	"copyright": "Copyright © 2023, Knot126",
 	"dependencies": {
+		"raylib-d": "~>4.5.1"
 	},
 	"description": "game",
 	"license": "proprietary",
-	"name": "kyock",
-	"dflags": [ "-version=NO_OPENGL" ]
+	"name": "mot",
+    "libs": [ "raylib" ],
+    "lflags-posix" : ["-L."],
+    "lflags-osx" : ["-rpath", "@executable_path/"],
+    "lflags-linux" : ["-rpath=$$ORIGIN"]
 }

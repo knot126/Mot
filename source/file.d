@@ -6,16 +6,22 @@ enum MTFileMode {
 	ReadWrite = 3,
 }
 
-string[MTFileMode] gFileModes = [
-	MTFileMode.Read: "rb",
-	MTFileMode.Write: "wb",
-	MTFileMode.ReadWrite: "a+",
-];
+string[MTFileMode] gFileModes = null;
 
 struct MTFile {
 	File f;
 	
 	this(string path, MTFileMode mode) {
+		// I'm not sure why this can't be initalised at runtime if its in global
+		// scope ...
+		if (!gFileModes) {
+			gFileModes = [
+				MTFileMode.Read: "rb",
+				MTFileMode.Write: "wb",
+				MTFileMode.ReadWrite: "a+",
+			];
+		}
+		
 		this.f = File();
 		this.f.open(path, gFileModes[mode]);
 	}

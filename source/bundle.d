@@ -1,4 +1,5 @@
 import std.stdio;
+import std.digest;
 import std.digest.sha;
 import error;
 import file;
@@ -9,18 +10,16 @@ struct MTBundleIdentifier {
 	ubyte[20] hash;
 	
 	string toString() {
-		return toHexString(this.hash);
+		return toHexString(this.hash).dup;
 	}
 }
 
 struct MTBundleFile {
-	string name;
 	uint size;
 	uint entry_start;
 	uint flags;
 	
 	this(string name, uint size, uint entry_start, uint flags) {
-		this.name = name;
 		this.size = size;
 		this.entry_start = entry_start;
 		this.flags = flags;
@@ -28,18 +27,9 @@ struct MTBundleFile {
 }
 
 struct MTBundle {
-	MTBundleIdentifier identifier;
-	MTBundleFile[] files;
+	MTBundleFile[string] files;
 	
-	this(MTBundleIdentifier identifier) {
-		this.identifier = identifier;
-	}
-	
-	string getPath() {
-		return gBundlePath ~ this.identifier.toString() ~ ".bundle";
-	}
-	
-	MTError loadInfo(string fromPath) {
+	MTError init(string fromPath) {
 		MTFile file = MTFile(fromPath, MTFileMode.Read);
 		
 		// Read initial header
@@ -63,6 +53,12 @@ struct MTBundle {
 		return MTError.Success;
 	}
 	
-	
+	byte[] load(string name) {
+		/*
+		 * Load a file from a bundle given the name.
+		 */
+		
+		return null;
+	}
 }
 

@@ -33,6 +33,10 @@ struct MTVector2 {
 		return MTVector2(this.x + other.x, this.y + other.y);
 	}
 	
+	void opOpAssign(string op: "+")(MTVector2 rhs) {
+		this = this + rhs;
+	}
+	
 	MTVector2 opBinary(string s : "-")(MTVector2 other) {
 		return MTVector2(this.x - other.x, this.y - other.y);
 	}
@@ -54,4 +58,57 @@ float dot(MTVector2 a, MTVector2 b) {
 	 */
 	
 	return a.x * b.x + a.y * b.y;
+}
+
+MTVector2 MTLerp(float t, MTVector2 a, MTVector2 b) {
+	return ((1.0 - t) * a) + (t * b);
+}
+
+struct MTColour {
+	float r, g, b, a;
+	
+	this(float r, float g, float b, float a = 1.0) {
+		this.r = r;
+		this.g = g;
+		this.b = b;
+		this.a = a;
+	}
+	
+	MTColour opBinary(string s : "+")(MTColour other) {
+		return MTColour(this.r + other.r, this.g + other.g, this.b + other.b, this.a + other.a);
+	}
+	
+	MTColour opBinary(string s : "-")(MTColour other) {
+		return MTColour(this.r - other.r, this.g - other.g, this.b - other.b, this.a - other.a);
+	}
+	
+	MTColour opBinary(string s : "*")(float scalar) {
+		return MTColour(scalar * this.r, scalar * this.g, scalar * this.b, scalar * this.a);
+	}
+	
+	MTColour opBinaryRight(string s : "*")(float scalar) {
+		return MTColour(scalar * this.r, scalar * this.g, scalar * this.b, scalar * this.a);
+	}
+	
+	MTColour opBinary(string s : "*")(MTColour other) {
+		return MTColour(this.r * other.r, this.g * other.g, this.b * other.b, this.a * other.a);
+	}
+	
+	int toHex() {
+		/*
+		 * Get the hex colour that can be passed to raylib.
+		 * Format: RRRRRRRR GGGGGGGG BBBBBBBB AAAAAAAA
+		 */
+		
+		int r = (cast(int) (this.r * 255.0)) & 0xff;
+		int g = (cast(int) (this.g * 255.0)) & 0xff;
+		int b = (cast(int) (this.b * 255.0)) & 0xff;
+		int a = (cast(int) (this.a * 255.0)) & 0xff;
+		
+		return (r << 24) | (g << 16) | (b << 8) | a;
+	}
+}
+
+MTColour MTLerp(float t, MTColour a, MTColour b) {
+	return ((1.0 - t) * a) + (t * b);
 }

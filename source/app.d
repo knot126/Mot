@@ -9,11 +9,21 @@ void main() {
 	
 	MTWindow window = MTWindow();
 	window.setTitle("Knock");
-	window.setSize(MTVector2(800, 600));
+	window.setSize(MTVector2(1280, 720));
 	window.init();
 	
 	while (!window.shouldClose()) {
+		window.beginFrame();
 		
+		window.drawBackground(MTColour(0.4, 0.2, 0.8));
+		
+		MTVector2[] shapeData = [
+			MTVector2(0, 0), MTVector2(100, 0),
+			MTVector2(200, 200), MTVector2(0, 100)
+		];
+		window.drawQuad(shapeData, MTColour(0.9, 0.6, 0.3));
+		
+		window.endFrame();
 	}
 	
 	window.close();

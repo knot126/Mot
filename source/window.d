@@ -99,6 +99,12 @@ struct MTWindow {
 	}
 	
 	void drawQuad(MTVector2[] points, MTColour colour) {
+		/*
+		 * Draw a quad
+		 * 
+		 * Raylib requires CCW points :|
+		 */
+		
 		Color c = MTColourForColour(colour);
 		Vector2
 			p1 = MTVectorForVector(points[0]),

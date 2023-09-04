@@ -6,6 +6,8 @@
  */
 
 import std.stdio;
+import std.conv;
+import log;
 
 enum MTLexerType {
 	Unknown,
@@ -88,7 +90,15 @@ struct MTLexerToken {
 	}
 	
 	void print() {
-		writeln("\t", this.location, ":\t", this.type);
+		write("\t", this.location, ":\t", this.type);
+		
+		switch (this.type) {
+			case MTLexerType.Symbol: writeln(":\t", this.value.asString); break;
+			case MTLexerType.String: writeln(":\t", this.value.asString); break;
+			case MTLexerType.Integer: writeln(":\t", this.value.asInteger); break;
+			case MTLexerType.Rational: writeln(":\t", this.value.asRational); break;
+			default: writeln(); break;
+		}
 	}
 }
 
@@ -197,7 +207,7 @@ bool MTLexerSymbolIsValidMidOrEndIdentifier(char symbol) {
 }
 
 bool MTLexerSymbolIsWhitespace(char symbol) {
-	return (symbol == ' ' || symbol == '\t' || symbol == '\n' || symbol = '\r');
+	return (symbol == ' ' || symbol == '\t' || symbol == '\n' || symbol == '\r');
 }
 
 MTLexerResult MTGenericLexerProcessString(string data) {
@@ -407,18 +417,29 @@ MTLexerResult MTGenericLexerProcessString(string data) {
 				break;
 			}
 			case ' ', '\t', '\n', '\r': {
+				// Whitespace
 				lexer.next();
 				break;
 			}
 			default: {
+				// Symbol
 				if (MTLexerSymbolIsValidStartingIdentifier(next)) {
 					string name = "";
 					size_t position = lexer.tell();
 					
 					while (true) {
+						// Add the current char
 						name ~= lexer.next();
+						
+						// Check if we are now done
+						if (lexer.done()) {
+							break;
+						}
+						
+						// Peek if not
 						next = lexer.peek();
 						
+						// Check if this is still an identifier
 						if (!MTLexerSymbolIsValidMidOrEndIdentifier(next)) {
 							break;
 						}
@@ -427,7 +448,50 @@ MTLexerResult MTGenericLexerProcessString(string data) {
 					MTLexerValue value;
 					value.asString = name;
 					
-					result.addToken(MTLexerToken(MTLexerType.String, value, position));
+					result.addToken(MTLexerToken(MTLexerType.Symbol, value, position));
+				}
+				// Hex number
+				else if (next == '0' && lexer.peek(1) == 'x') {
+					MTLog(MTLogLevel.Warning, "Don't know how to handle hex number yet");
+				}
+				// Digit
+				else if (MTLexerSymbolIsDigit(next)) {
+					string running_string = "";
+					size_t position = lexer.tell();
+					bool radix_seen = false;
+					
+					while (true) {
+						running_string ~= lexer.next();
+						
+						if (lexer.done()) {
+							break;
+						}
+						
+						next = lexer.peek();
+						
+						if (!MTLexerSymbolIsDigit(next) && (!MTLexerSymbolIsRadixPoint(next) || radix_seen)) {
+							break;
+						}
+						
+						if (MTLexerSymbolIsRadixPoint(next)) {
+							radix_seen = true;
+						}
+					}
+					
+					// Rational
+					if (radix_seen) {
+						MTLexerValue value;
+						value.asRational = to!double(running_string);
+						
+						result.addToken(MTLexerToken(MTLexerType.Rational, value, position));
+					}
+					// Integer
+					else {
+						MTLexerValue value;
+						value.asInteger = to!long(running_string);
+						
+						result.addToken(MTLexerToken(MTLexerType.Integer, value, position));
+					}
 				}
 				else {
 					// Don't know what to do

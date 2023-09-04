@@ -12,7 +12,7 @@ void main() {
 	window.setSize(MTVector2(1280, 720));
 	window.init();
 	
-	MTLexerResult lr = MTGenericLexerProcessString("!= ! \t @ && || // ; \n +");
+	MTLexerResult lr = MTGenericLexerProcessString("a != b, !item, \t @ f3 && f4 || f5 // 0.6; \n 5 + 0.6");
 	lr.print();
 	
 	while (!window.shouldClose()) {

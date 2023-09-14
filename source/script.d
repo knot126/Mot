@@ -1,0 +1,5 @@
+import lexer;
+
+class MTScript {
+	
+}

@@ -1,4 +1,4 @@
-import gameobject;
+import mtobject;
 
 alias MTObjectID = uint;
 

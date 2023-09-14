@@ -1,3 +1,9 @@
+/*
+ * In theory this does something nice like having a struct that can do dynamic
+ * typing and also having dynamic objects that you can use to do nice things.
+ * 
+ * I'm not sure if it is really so nice...
+ */
 
 enum MTValueType {
 	None,
@@ -6,7 +12,7 @@ enum MTValueType {
 	Rational,
 	String,
 	Symbol,
-	Class,
+	Object,
 }
 
 union MTValueData {
@@ -23,7 +29,7 @@ struct MTValue {
 	alias data this;
 }
 
-struct MTObject {
+class MTObject {
 	void *[string] data;
 	
 	void set(T)(string attr, T *data) {

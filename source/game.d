@@ -14,6 +14,7 @@ struct MTGame {
 	string id;
 	
 	MTWindow window;
+	MTObject[] objects;
 	
 	void init() {
 		this.name = "Knock";
@@ -27,21 +28,42 @@ struct MTGame {
 	
 	void run() {
 		while (!this.window.shouldClose()) {
-			this.window.beginFrame();
-			
-			this.window.drawBackground(MTColour(0.118, 0.294, 0.388));
-			
-			MTVector2[] shapeData = [
-				MTVector2(0, 0), MTVector2(100, 0),
-				MTVector2(200, 200), MTVector2(0, 100)
-			];
-			this.window.drawQuad(shapeData, MTColour(0.969, 0.663, 0.0));
-			
-			this.window.endFrame();
+			MTDrawObjects(this.window, this.objects);
 		}
 	}
 	
 	void end() {
 		this.window.close();
 	}
+}
+
+void MTDrawObjects(ref MTWindow window, MTObject[] objects) {
+	window.beginFrame();
+	
+	window.drawBackground(MTColour(0.118, 0.294, 0.388));
+	
+	// Draw every object
+	for (size_t i = 0; i < objects.length; i++) {
+		string renderType = objects[i].get!string("renderType");
+		
+		switch (renderType) {
+			case "OBB":
+				MTVector2 *pos = objects[i].get!(MTVector2 *)("pos");
+				MTVector2 *size = objects[i].get!(MTVector2 *)("size");
+				MTVector2 *rot = objects[i].get!(MTVector2 *)("rot");
+				MTColour *colour = objects[i].get!(MTColour *)("colour");
+				
+				MTVector2[] shapeData = [
+					pos + MTVector2(-1, -1) * size, pos + MTVector2(1, -1) * size,
+					pos + size, pos + MTVector2(-1, 1) * size
+				];
+				
+				window.drawQuad(shapeData, MTColour(0.969, 0.663, 0.0));
+				break;
+			default:
+				MTLog(MTLogLevel.Warning, "Unknown render type for object");
+		}
+	}
+	
+	window.endFrame();
 }

@@ -48,6 +48,10 @@ struct MTVector2 {
 	MTVector2 opBinaryRight(string s : "*")(float scalar) {
 		return MTVector2(scalar * this.x, scalar * this.y);
 	}
+	
+	MTVector2 opBinary(string s : "*")(MTVector2 other) {
+		return MTVector2(other.x * this.x, other.y * this.y);
+	}
 }
 
 float dot(MTVector2 a, MTVector2 b) {

@@ -13,6 +13,8 @@ enum MTValueType {
 	String,
 	Symbol,
 	Object,
+	NativeFunction,
+	ScriptFunction,
 }
 
 union MTValueData {
@@ -46,5 +48,13 @@ class MTObject {
 		 */
 		
 		return cast(T) this.data[attr];
+	}
+	
+	bool has(string key) {
+		/*
+		 * Return true if an element exists.
+		 */
+		
+		return (key in this.data) != null;
 	}
 }

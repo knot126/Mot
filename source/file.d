@@ -1,4 +1,6 @@
 import std.stdio;
+import std.file;
+import std.process;
 
 enum MTFileMode {
 	Read = 1,
@@ -24,6 +26,10 @@ struct MTFile {
 		
 		this.f = File();
 		this.f.open(path, gFileModes[mode]);
+	}
+	
+	void read(ref byte[] buf) {
+		this.f.rawRead(buf);
 	}
 	
 	byte readByte() {
@@ -54,4 +60,51 @@ struct MTFile {
 	void seek(int mode, long offset) {
 		this.f.seek(offset, mode);
 	}
+	
+	size_t tell() {
+		return this.f.tell();
+	}
+	
+	size_t length() {
+		size_t old = this.tell();
+		this.seek(SEEK_END, 0);
+		size_t len = this.tell();
+		this.seek(SEEK_SET, old);
+		return len;
+	}
+}
+
+byte[] MTLoadFile(string path) {
+	if (!isFile(path)) {
+		return null;
+	}
+	
+	MTFile file = MTFile(path, MTFileMode.Read);
+	
+	byte[] data = new byte[file.length()];
+	
+	file.read(data);
+	
+	return data;
+}
+
+bool MTIsFolder(string path) {
+	return isDir(path);
+}
+
+string MTGetHomeFolder() {
+	string homedir = environment.get("HOME", "/home/user");
+	return homedir;
+}
+
+string gConfigName = "Decent Games/Knock";
+
+string MTGetConfigFolder() {
+	string confdir = environment.get("APPDATA", MTGetHomeFolder() ~ "/.config") ~ "/" ~ gConfigName ~ "/";
+	
+	if (!isDir(confdir)) {
+		mkdirRecurse(confdir);
+	}
+	
+	return confdir;
 }

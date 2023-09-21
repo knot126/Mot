@@ -6,6 +6,7 @@ import window;
 import lexer;
 import maths;
 import log;
+import resman;
 
 MTGame gGame;
 
@@ -18,7 +19,7 @@ struct MTGame {
 	
 	void init() {
 		this.name = "Knock";
-		this.id = "org.knot126.knock";
+		this.id = "org.knot126.knock.main";
 		
 		this.window = MTWindow();
 		this.window.setTitle(this.name);
@@ -66,4 +67,14 @@ void MTDrawObjects(ref MTWindow window, MTObject[] objects) {
 	}
 	
 	window.endFrame();
+}
+
+void MTPrepareResMan(string id) {
+	if (MTIsFolder("./bundles/org.knot126.knock.main")) {
+		resman.initWithFolder("./bundles/org.knot126.knock.main");
+	}
+	else {
+		// Need to look up bundle id
+		resman.initWithBundle(MTGetConfigFolder() ~ "knock");
+	}
 }

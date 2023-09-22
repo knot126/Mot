@@ -9,6 +9,7 @@ import log;
 import resman;
 import mtobject;
 import file;
+import std.conv;
 
 MTGame gGame;
 
@@ -43,7 +44,7 @@ struct MTGame {
 }
 
 void MTDrawObjects(ref MTWindow window, MTObject[] objects) {
-	MTLog(MTLogLevel.Info, "Readying to draw " ~ objects.length.toString() ~ " objects");
+	MTLog(MTLogLevel.Info, "Readying to draw " ~ text(objects.length) ~ " objects");
 	
 	window.beginFrame();
 	

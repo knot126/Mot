@@ -89,7 +89,12 @@ byte[] MTLoadFile(string path) {
 }
 
 bool MTIsFolder(string path) {
-	return isDir(path);
+	try {
+		return isDir(path);
+	}
+	catch (FileException) {
+		return false;
+	}
 }
 
 string MTGetHomeFolder() {
@@ -102,7 +107,10 @@ string gConfigName = "Decent Games/Knock";
 string MTGetConfigFolder() {
 	string confdir = environment.get("APPDATA", MTGetHomeFolder() ~ "/.config") ~ "/" ~ gConfigName ~ "/";
 	
-	if (!isDir(confdir)) {
+	try {
+		isDir(confdir);
+	}
+	catch (FileException) {
 		mkdirRecurse(confdir);
 	}
 	

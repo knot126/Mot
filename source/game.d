@@ -7,12 +7,15 @@ import lexer;
 import maths;
 import log;
 import resman;
+import mtobject;
+import file;
 
 MTGame gGame;
 
 struct MTGame {
 	string name;
 	string id;
+	string configPath;
 	
 	MTWindow window;
 	MTObject[] objects;
@@ -20,6 +23,7 @@ struct MTGame {
 	void init() {
 		this.name = "Knock";
 		this.id = "org.knot126.knock.main";
+		this.configPath = MTGetConfigFolder();
 		
 		this.window = MTWindow();
 		this.window.setTitle(this.name);
@@ -49,10 +53,10 @@ void MTDrawObjects(ref MTWindow window, MTObject[] objects) {
 		
 		switch (renderType) {
 			case "OBB":
-				MTVector2 *pos = objects[i].get!(MTVector2 *)("pos");
-				MTVector2 *size = objects[i].get!(MTVector2 *)("size");
-				MTVector2 *rot = objects[i].get!(MTVector2 *)("rot");
-				MTColour *colour = objects[i].get!(MTColour *)("colour");
+				MTVector2 pos = objects[i].get!(MTVector2)("pos");
+				MTVector2 size = objects[i].get!(MTVector2)("size");
+				MTVector2 rot = objects[i].get!(MTVector2)("rot");
+				MTColour colour = objects[i].get!(MTColour)("colour");
 				
 				MTVector2[] shapeData = [
 					pos + MTVector2(-1, -1) * size, pos + MTVector2(1, -1) * size,
@@ -71,10 +75,10 @@ void MTDrawObjects(ref MTWindow window, MTObject[] objects) {
 
 void MTPrepareResMan(string id) {
 	if (MTIsFolder("./bundles/org.knot126.knock.main")) {
-		resman.initWithFolder("./bundles/org.knot126.knock.main");
+		gResMan.initWithFolder("./bundles/org.knot126.knock.main");
 	}
 	else {
 		// Need to look up bundle id
-		resman.initWithBundle(MTGetConfigFolder() ~ "knock");
+		gResMan.initWithBundle(MTGetConfigFolder() ~ "");
 	}
 }

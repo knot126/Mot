@@ -1,7 +1,7 @@
 import file;
 import log;
 
-MTResMan resman;
+MTResMan gResMan;
 
 enum MTResManStorageType {
 	None   = 0,
@@ -28,13 +28,14 @@ struct MTResMan {
 	
 	byte[] readFile(string named) {
 		switch (this.type) {
-			case MTResManStorageType.Folder:
+			case MTResManStorageType.Folder: {
 				return MTLoadFile(this.path ~ "/" ~ named);
-				break;
+			}
 			
-			default:
+			default: {
 				MTLog(MTLogLevel.Error, "Cannot load file " ~ named);
-				break;
+				return null;
+			}
 		}
 	}
 	

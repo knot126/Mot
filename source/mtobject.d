@@ -5,6 +5,8 @@
  * I'm not sure if it is really so nice...
  */
 
+import maths;
+
 enum MTValueType {
 	None,
 	Null,
@@ -22,6 +24,7 @@ union MTValueData {
 	long asInteger;
 	double asRational;
 	string asString;
+	MTVector2 asVector2;
 }
 
 struct MTValue {
@@ -39,15 +42,18 @@ class MTObject {
 		 * Set data on the object
 		 */
 		
-		this.data[attr] = cast(void *) data;
+		T *memory = new T[1];
+		memory[0] = data;
+		
+		this.data[attr] = cast(void *) memory;
 	}
 	
-	T *get(T)(string attr) {
+	T get(T)(string attr) {
 		/*
 		 * Get data for this object
 		 */
 		
-		return cast(T) this.data[attr];
+		return (cast(T *) this.data[attr])[0];
 	}
 	
 	bool has(string key) {

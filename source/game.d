@@ -43,6 +43,8 @@ struct MTGame {
 }
 
 void MTDrawObjects(ref MTWindow window, MTObject[] objects) {
+	MTLog(MTLogLevel.Info, "Readying to draw " ~ objects.length.toString() ~ " objects");
+	
 	window.beginFrame();
 	
 	window.drawBackground(MTColour(0.118, 0.294, 0.388));

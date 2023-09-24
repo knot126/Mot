@@ -68,8 +68,16 @@ void MTDrawObjects(ref MTWindow window, MTObject[] objects) {
 				
 				window.drawQuad(shapeData, MTColour(0.969, 0.663, 0.0));
 				break;
+			
+			case "Text":
+				MTVector2 pos = objects[i].get!MTVector2("pos");
+				float size = objects[i].get!float("size");
+				string text = objects[i].get!string("text");
+				break;
+			
 			default:
 				MTLog(MTLogLevel.Warning, "Unknown render type for object");
+				break;
 		}
 	}
 	

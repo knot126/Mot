@@ -7,33 +7,6 @@
 
 import maths;
 
-enum MTValueType {
-	None,
-	Null,
-	Integer,
-	Rational,
-	String,
-	Symbol,
-	Object,
-	NativeFunction,
-	ScriptFunction,
-}
-
-union MTValueData {
-	void *asPointer;
-	long asInteger;
-	double asRational;
-	string asString;
-	MTVector2 asVector2;
-}
-
-struct MTValue {
-	MTValueType type;
-	MTValueData data;
-	
-	alias data this;
-}
-
 class MTObject {
 	void *[string] data;
 	
